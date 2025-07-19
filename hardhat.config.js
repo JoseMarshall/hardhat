@@ -33,7 +33,7 @@ module.exports = {
         blockNumber: Number(process.env.BASE_BLOCK_NUMBER), // Optional: pin to a specific block for stability
       },
 
-      chainId: 8453,
+      chainId: Number(process.env.CHAIN_ID),
       accounts: PRIVATE_KEYS.map(privateKey => ({
         privateKey,
         balance: '10000000000000000000000',
