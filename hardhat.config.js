@@ -28,6 +28,12 @@ module.exports = {
   solidity: '0.8.28',
   networks: {
     hardhat: {
+      mining: {
+        auto: process.env.MINING_AUTO === 'true',
+        interval: process.env.MINING_INTERVAL
+          ? Number(process.env.MINING_INTERVAL)
+          : 60000, // 1 minute
+      },
       forking: {
         url: process.env.BASE_RPC_URL,
         blockNumber: Number(process.env.BASE_BLOCK_NUMBER), // Optional: pin to a specific block for stability
