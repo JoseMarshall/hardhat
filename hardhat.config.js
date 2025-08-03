@@ -24,21 +24,29 @@ const PRIVATE_KEYS = [
 ];
 
 /** @type import('hardhat/config').HardhatUserConfig */
+const miningAutoEnabled = process.env.MINING_AUTO === 'true';
+
 module.exports = {
   solidity: '0.8.28',
   networks: {
     hardhat: {
-      mining: {
-        auto: process.env.MINING_AUTO === 'true',
-        interval: process.env.MINING_INTERVAL
-          ? Number(process.env.MINING_INTERVAL)
-          : 60000, // 1 minute
-      },
+      ...(miningAutoEnabled
+        ? {
+            mining: {
+              auto: miningAutoEnabled,
+              interval: process.env.MINING_INTERVAL
+                ? Number(process.env.MINING_INTERVAL)
+                : undefined,
+            },
+          }
+        : {}),
       forking: {
         url: process.env.BASE_RPC_URL,
         blockNumber: Number(process.env.BASE_BLOCK_NUMBER), // Optional: pin to a specific block for stability
       },
-
+      blockGasLimit: 1_000_000_000_000_000,
+      gasPrice: 0,
+      initialBaseFeePerGas: 0,
       chainId: Number(process.env.CHAIN_ID),
       accounts: PRIVATE_KEYS.map(privateKey => ({
         privateKey,
